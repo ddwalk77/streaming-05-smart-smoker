@@ -37,3 +37,6 @@ smoker-temps.csv has 4 columns:
 
 ### Producer (smart_smoker_emitter.py)
 The producer, smart_smoker_emitter.py, opens the csv file, smoker-temps.csv, and reads each row. For each row, a connection is made to Rabbit MQ, queues are declared, each columns is read and submitted. For each column, the time is captured, then the temp, sending both to the queue as a row.
+
+producing:
+![producing script](https://github.com/ddwalk77/streaming-05-smart-smoker/blob/main/producing.png "producing script")
