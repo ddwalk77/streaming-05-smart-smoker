@@ -70,7 +70,7 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
                     # to a float (a floating point number) or decimal
                     SmokerTemp = round(float(Channel1),2)
                     # use an fstring to create a message from our data
-                    Smokerstring = f"[{Time}{SmokerTemp}]"
+                    Smokerstring = f"[{Time},{SmokerTemp}]"
                     # prepare a binary (1s and 0s) message to stream
                     Smokerstring = Smokerstring.encode()
                     # use the channel to publish a message to the queue
@@ -88,7 +88,7 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
                     # to a float (a floating point number) or decimal
                     FoodATemp = round(float(Channel2),2)
                     # use an fstring to create a message from our data
-                    Astring = f"[{Time}{FoodATemp}]"
+                    Astring = f"[{Time},{FoodATemp}]"
                     # prepare a binary (1s and 0s) message to stream
                     Astring = Astring.encode()
                     # use the channel to publish a message to the queue
@@ -106,7 +106,7 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
                     # to a float (a floating point number) or decimal
                     FoodBTemp = round(float(Channel3),2)
                     # use an fstring to create a message from our data
-                    Bstring = f"[{Time}{FoodBTemp}]"
+                    Bstring = f"[{Time},{FoodBTemp}]"
                     # prepare a binary (1s and 0s) message to stream
                     Bstring = Bstring.encode()
                     # use the channel to publish a message to the queue
