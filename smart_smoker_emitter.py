@@ -1,5 +1,7 @@
 """
     This program sends a message to a queue on the RabbitMQ server.
+    We are sending the time and temp from the smoker and two food
+    items.
 
     Name: DeeDee Walker
     Date: 2/7/23
@@ -55,6 +57,10 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
                 conn = pika.BlockingConnection(pika.ConnectionParameters(host))
                 # use the connection to create a communication channel
                 ch = conn.channel()
+                # delete the queue on startup to clear them before redeclaring
+                ch.queue_delete(queue1)
+                ch.queue_delete(queue2)
+                ch.queue_delete(queue3)
                 # use the channel to declare a durable queue
                 # a durable queue will survive a RabbitMQ server restart
                 # and help ensure messages are processed in order
@@ -133,7 +139,7 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
 # If this is the program being run, then execute the code below
 if __name__ == "__main__":  
     # ask the user if they'd like to open the RabbitMQ Admin site or just open it by passing True or False
-    offer_rabbitmq_admin_site(False)
+    offer_rabbitmq_admin_site(True)
 
     queue1 = '01-smoker'
     queue2 = '02-food-A'
