@@ -24,7 +24,7 @@ def offer_rabbitmq_admin_site(show_offer):
     else:
         webbrowser.open_new("http://localhost:15672/#/queues")
         
-def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
+def send_message(host: str):
     """
     Reads csv file as a message to the queue each execution.
     This process runs and finishes.
@@ -37,6 +37,12 @@ def send_message(host: str, queue1: str, queue2: str, queue3: str,file_name):
         file_name: name of the csv we are reading
 
     """
+    #declare the variables
+    file_name = 'smoker-temps.csv'
+    queue1 = '01-smoker'
+    queue2 = '02-food-A'
+    queue3 = '02-food-B'
+
     # read from a file to get the messages (aka data) to be sent - declaring variable file_name
     with open(file_name, 'r') as file:
         # Create a csv reader to read per row each new line
@@ -141,9 +147,5 @@ if __name__ == "__main__":
     # ask the user if they'd like to open the RabbitMQ Admin site or just open it by passing True or False
     offer_rabbitmq_admin_site(True)
 
-    queue1 = '01-smoker'
-    queue2 = '02-food-A'
-    queue3 = '02-food-B'
-
     # send the message to the queue
-    send_message('localhost',queue1, queue2, queue3,'smoker-temps.csv')
+    send_message('localhost')
