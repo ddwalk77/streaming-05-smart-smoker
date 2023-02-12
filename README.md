@@ -23,8 +23,10 @@ Our thermometer records three temperatures every thirty seconds (two readings ev
 ### Smart System
 We will use Python to:
 
-Simulate a streaming series of temperature readings from our smart smoker and two foods.
-Create a producer to send these temperature readings to RabbitMQ.
+- Simulate a streaming series of temperature readings from our smart smoker and two foods.
+- Create a producer to send these temperature readings to RabbitMQ.
+- Create three consumer processes, each one monitoring one of the temperature streams. 
+- Perform calculations to determine if a significant event has occurred.
 
 We want to stream information from a smart smoker. Read one value every half minute. (sleep_secs = 30)
 
@@ -34,6 +36,16 @@ smoker-temps.csv has 4 columns:
 [1] Channel1 = Smoker Temp --> send to message queue "01-smoker"
 [2] Channe2 = Food A Temp --> send to message queue "02-food-A"
 [3] Channe3 = Food B Temp --> send to message queue "02-food-B"
+
+### Significant Events
+We want know if:
+
+1. The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
+2. Any food temperature changes less than 1 degree F in 10 minutes (food stall!)
+
+### Optional: Alert Notifications
+- Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
+- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
 
 ### Producer (smart_smoker_emitter.py)
 The producer, smart_smoker_emitter.py, opens the csv file, smoker-temps.csv, and reads each row. For each row, a connection is made to Rabbit MQ, queues are declared, each columns is read and submitted. For each column, the time is captured, then the temp, sending both to the queue as a row.
