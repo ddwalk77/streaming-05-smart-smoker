@@ -35,6 +35,7 @@ def send_message(host: str):
         queue2 (str): the name of the FoodA queue
         queue3 (str): the name of the FoodB queue
         file_name: name of the csv we are reading
+        nulltemp: when no temp enter 0
 
     """
     #declare the variables
@@ -42,6 +43,7 @@ def send_message(host: str):
     queue1 = '01-smoker'
     queue2 = '02-food-A'
     queue3 = '02-food-B'
+    nulltemp = 0
 
     # read from a file to get the messages (aka data) to be sent - declaring variable file_name
     with open(file_name, 'r') as file:
@@ -50,30 +52,30 @@ def send_message(host: str):
 
         # Our file has a header row, move to next to get to data
         header = next(reader)
-    
-        for row in reader:
-            # set local variables for each column in the row
-            # note: the order of the columns is important
-            # and must match the order in the input file
-            # We really only care about the temperature column
-            Time,Channel1,Channel2,Channel3 = row
 
-            try:
-                # create a blocking connection to the RabbitMQ server
-                conn = pika.BlockingConnection(pika.ConnectionParameters(host))
-                # use the connection to create a communication channel
-                ch = conn.channel()
-                # delete the queue on startup to clear them before redeclaring
-                ch.queue_delete(queue1)
-                ch.queue_delete(queue2)
-                ch.queue_delete(queue3)
-                # use the channel to declare a durable queue
-                # a durable queue will survive a RabbitMQ server restart
-                # and help ensure messages are processed in order
-                # messages will not be deleted until the consumer acknowledges
-                ch.queue_declare(queue=queue1, durable=True)
-                ch.queue_declare(queue=queue2, durable=True)
-                ch.queue_declare(queue=queue3, durable=True)
+        try:
+            # create a blocking connection to the RabbitMQ server
+            conn = pika.BlockingConnection(pika.ConnectionParameters(host))
+            # use the connection to create a communication channel
+            ch = conn.channel()
+            # delete the queue on startup to clear them before redeclaring
+            ch.queue_delete(queue1)
+            ch.queue_delete(queue2)
+            ch.queue_delete(queue3)
+            # use the channel to declare a durable queue
+            # a durable queue will survive a RabbitMQ server restart
+            # and help ensure messages are processed in order
+            # messages will not be deleted until the consumer acknowledges
+            ch.queue_declare(queue=queue1, durable=True)
+            ch.queue_declare(queue=queue2, durable=True)
+            ch.queue_declare(queue=queue3, durable=True)
+    
+            for row in reader:
+                # set local variables for each column in the row
+                # note: the order of the columns is important
+                # and must match the order in the input file
+                # We really only care about the temperature column
+                Time,Channel1,Channel2,Channel3 = row
 
                 try:
                     # use the built-in round() function to round to 2 decimal places
@@ -91,7 +93,11 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Smokerstring}")
                 except ValueError:
-                    pass
+                    # no temp to print so just print the time and a zero
+                    Smokerstring = f"[{Time},{nulltemp}]"
+                    Smokerstring = Smokerstring.encode()
+                    ch.basic_publish(exchange="", routing_key=queue1, body=Smokerstring)
+                    print(f" [x] Sent {Smokerstring}")
 
                 try:
                     # use the built-in round() function to round to 2 decimal places
@@ -109,7 +115,11 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Astring}")
                 except ValueError:
-                    pass
+                    # no temp to print so just print the time and a zero
+                    Astring = f"[{Time},{nulltemp}]"
+                    Astring = Astring.encode()
+                    ch.basic_publish(exchange="", routing_key=queue2, body=Astring)
+                    print(f" [x] Sent {Astring}")
 
                 try:
                     # use the built-in round() function to round to 2 decimal places
@@ -127,17 +137,21 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Bstring}")
                 except ValueError:
-                    pass
+                    # no temp to print so just print the time and a zero
+                    Bstring = f"[{Time},{nulltemp}]"
+                    Bstring = Bstring.encode()
+                    ch.basic_publish(exchange="", routing_key=queue3, body=Bstring)
+                    print(f" [x] Sent {Bstring}")
 
-            except pika.exceptions.AMQPConnectionError as e:
-                print(f"Error: Connection to RabbitMQ server failed: {e}")
-                sys.exit(1)
-            finally:
-                # close the connection to the server
-                conn.close()
+        except pika.exceptions.AMQPConnectionError as e:
+            print(f"Error: Connection to RabbitMQ server failed: {e}")
+            sys.exit(1)
+        finally:
+            # close the connection to the server
+            conn.close()
             
-            #sleep for 30 seconds
-            time.sleep(30)
+        #sleep for 30 seconds
+        time.sleep(1)
 
 # Standard Python idiom to indicate main program entry point
 # This allows us to import this module and use its functions
