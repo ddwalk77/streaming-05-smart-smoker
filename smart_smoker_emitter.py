@@ -151,7 +151,7 @@ def send_message(host: str):
             conn.close()
             
         #sleep for 30 seconds
-        time.sleep(1)
+        time.sleep(30)
 
 # Standard Python idiom to indicate main program entry point
 # This allows us to import this module and use its functions
