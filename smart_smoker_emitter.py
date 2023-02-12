@@ -142,6 +142,9 @@ def send_message(host: str):
                     Bstring = Bstring.encode()
                     ch.basic_publish(exchange="", routing_key=queue3, body=Bstring)
                     print(f" [x] Sent {Bstring}")
+            
+                #sleep for 30 seconds
+                time.sleep(30)
 
         except pika.exceptions.AMQPConnectionError as e:
             print(f"Error: Connection to RabbitMQ server failed: {e}")
@@ -149,9 +152,6 @@ def send_message(host: str):
         finally:
             # close the connection to the server
             conn.close()
-            
-        #sleep for 30 seconds
-        time.sleep(30)
 
 # Standard Python idiom to indicate main program entry point
 # This allows us to import this module and use its functions
