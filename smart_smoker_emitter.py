@@ -43,7 +43,6 @@ def send_message(host: str):
     queue1 = '01-smoker'
     queue2 = '02-food-A'
     queue3 = '02-food-B'
-    nulltemp = 0
 
     # read from a file to get the messages (aka data) to be sent - declaring variable file_name
     with open(file_name, 'r') as file:
@@ -93,11 +92,7 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Smokerstring}")
                 except ValueError:
-                    # no temp to print so just print the time and a zero
-                    Smokerstring = f"[{Time},{nulltemp}]"
-                    Smokerstring = Smokerstring.encode()
-                    ch.basic_publish(exchange="", routing_key=queue1, body=Smokerstring)
-                    print(f" [x] Sent {Smokerstring}")
+                    pass
 
                 try:
                     # use the built-in round() function to round to 2 decimal places
@@ -115,11 +110,7 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Astring}")
                 except ValueError:
-                    # no temp to print so just print the time and a zero
-                    Astring = f"[{Time},{nulltemp}]"
-                    Astring = Astring.encode()
-                    ch.basic_publish(exchange="", routing_key=queue2, body=Astring)
-                    print(f" [x] Sent {Astring}")
+                    pass
 
                 try:
                     # use the built-in round() function to round to 2 decimal places
@@ -137,11 +128,7 @@ def send_message(host: str):
                     # print a message to the console for the user
                     print(f" [x] Sent {Bstring}")
                 except ValueError:
-                    # no temp to print so just print the time and a zero
-                    Bstring = f"[{Time},{nulltemp}]"
-                    Bstring = Bstring.encode()
-                    ch.basic_publish(exchange="", routing_key=queue3, body=Bstring)
-                    print(f" [x] Sent {Bstring}")
+                    pass
             
                 #sleep for 30 seconds
                 time.sleep(30)
