@@ -43,12 +43,28 @@ We want know if:
 1. The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
 2. Any food temperature changes less than 1 degree F in 10 minutes (food stall!)
 
+### Smart Smoker Consumer Data Challenges
+If you look at the data carefully, you'll notice that we don't get our temperature readings on a regular basis. 
+
+The timestamps are offset, and many intervals have missing data. 
+For school, we will make some simplifying assumptions and focus on the overall process. 
+
+### Simplifying assumptions
+For class, assume each data point with a value occurs on a regular basis and add it to the deque. 
+
+That is: 
+- IGNORE the real timestamps
+- evaluate the deque of readings (either 5 or 20) as though the real timestamps were not so terrible.
+It's more complex if we try to use real timestamps. Adjusting for the non-regular timestamps is an interesting problem, but not the point. Know that you will likely have to address issues like that in the "real world". 
+
 ### Optional: Alert Notifications
 - Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
 - You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
 
 ### Producer (smart_smoker_emitter.py)
-The producer, smart_smoker_emitter.py, opens the csv file, smoker-temps.csv, and reads each row. For each row, a connection is made to Rabbit MQ, queues are declared, each columns is read and submitted. For each column, the time is captured, then the temp, sending both to the queue as a row.
+The producer, smart_smoker_emitter.py, opens the csv file, smoker-temps.csv, and reads each row. For each row, a connection is made to Rabbit MQ, queues are declared, each columns is read and submitted. For each column, the time is captured, then the temp, sending both to the queue as a row. If there is no temp provided it sends a null value of 0
 
 producing:
 ![producing script](https://github.com/ddwalk77/streaming-05-smart-smoker/blob/main/producing.png "producing script")
+
+### Consumer (smart_smoker_listener.py)
