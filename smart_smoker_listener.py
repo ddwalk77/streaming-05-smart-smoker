@@ -60,7 +60,7 @@ def smoker_callback(ch, method, properties, body):
             print("smoker alert!")
         #Show work in progress, letting the user know the changes
         else:
-            print("Temp change in last 2.5 minutes is:", Smktempcheck)
+            print("Smoker temp change in last 2.5 minutes is:", Smktempcheck)
     else:
         #if the deque has less than 5 items it skips
         pass
@@ -70,20 +70,56 @@ def smoker_callback(ch, method, properties, body):
 
 def foodA_callback(ch, method, properties, body):
     """ Define behavior on getting a message about FoodA temperature."""
-    # decode the binary message body to a string
-    print(f" [x] Received {body.decode()}")
-    # when done with task, tell the user
-    print(" [x] Done.")
+    #define a list to place food A temps initializing with 0
+    foodatemp = ['0']
+    #seperate the temp from the dat/time by using split
+    message = body.decode().split(",")    
+    #assign the temp to a variable making it a float
+    foodatemp[0] = round(float(message[-1]),2)
+    # add the temp to the deque
+    foodA_deque.append(foodatemp[0])
+    #check to see that the deque has 5 items before analyzing
+    if len(foodA_deque) == 20:
+        # read rightmost item in deque and subtract from leftmost item in deque
+        #assign difference to a variable as a float rounded to 2
+        foodatempcheck = round(float(foodA_deque[-1]-foodA_deque[0]),2)
+        #if the temp has changed by 15 degress then an alert is sent
+        if foodatempcheck < -1:
+            print("food stall on food A!")
+        #Show work in progress, letting the user know the changes
+        else:
+            print("Food A temp change in last minute is:", foodatempcheck)
+    else:
+        #if the deque has less than 20 items it skips
+        pass
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
 
 def foodB_callback(ch, method, properties, body):
     """ Define behavior on getting a message about FoodB temperature."""
-    # decode the binary message body to a string
-    print(f" [x] Received {body.decode()}")
-    # when done with task, tell the user
-    print(" [x] Done.")
+    #define a list to place food A temps initializing with 0
+    foodbtemp = ['0']
+    #seperate the temp from the dat/time by using split
+    message = body.decode().split(",")    
+    #assign the temp to a variable making it a float
+    foodbtemp[0] = round(float(message[-1]),2)
+    # add the temp to the deque
+    foodB_deque.append(foodbtemp[0])
+    #check to see that the deque has 5 items before analyzing
+    if len(foodB_deque) == 20:
+        # read rightmost item in deque and subtract from leftmost item in deque
+        #assign difference to a variable as a float rounded to 2
+        foodbtempcheck = round(float(foodB_deque[-1]-foodB_deque[0]),2)
+        #if the temp has changed by 15 degress then an alert is sent
+        if foodbtempcheck < -1:
+            print("food stall on food B!")
+        #Show work in progress, letting the user know the changes
+        else:
+            print("Food B temp change in last minute is:", foodbtempcheck)
+    else:
+        #if the deque has less than 20 items it skips
+        pass
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -155,9 +191,9 @@ def main(hn: str, queue1: str, queue2: str, queue3: str):
     finally:
         print("\nClosing connection. Goodbye.\n")
         # delete the queues when complete so messages are cleared
-        #channel.queue_delete(queue1)
-        #channel.queue_delete(queue2)
-        #channel.queue_delete(queue3)
+        channel.queue_delete(queue1)
+        channel.queue_delete(queue2)
+        channel.queue_delete(queue3)
         connection.close()
 
 # Standard Python idiom to indicate main program entry point
