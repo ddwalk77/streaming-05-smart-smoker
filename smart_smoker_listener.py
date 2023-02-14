@@ -26,6 +26,8 @@
 
     Three listeneing queues: 01-smoker, 02-food-A, 02-food-B
     Three listening callback functions
+
+    Start the emitter first or it closes out the listener since the queue delete is part of the script
 """
 import pika
 import sys
