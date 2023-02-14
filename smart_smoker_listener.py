@@ -38,18 +38,18 @@ smoker_deque = deque(maxlen=5)
 foodA_deque = deque(maxlen=20)
 # limited to 20 items (the 20 most recent readings)
 foodB_deque = deque(maxlen=20)
-#define a list to place temps initializing with 0
-temp = ['0']
 
 # define a callback function to be called when a message is received
 def smoker_callback(ch, method, properties, body):
     """ Define behavior on getting a message about the smoker temperature."""
+    #define a list to place smoker temps initializing with 0
+    smokertemp = ['0']
     #seperate the temp from the dat/time by using split
     message = body.decode().split(",")
     #assign the temp to a variable making it a float
-    temp[0] = round(float(message[-1]),2)
+    smokertemp[0] = round(float(message[-1]),2)
     # add the temp to the deque
-    smoker_deque.append(temp[0])
+    smoker_deque.append(smokertemp[0])
     #check to see that the deque has 5 items before analyzing
     if len(smoker_deque) == 5:
         # read rightmost item in deque and subtract from leftmost item in deque
