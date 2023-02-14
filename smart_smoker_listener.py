@@ -38,27 +38,28 @@ smoker_deque = deque(maxlen=5)
 foodA_deque = deque(maxlen=20)
 # limited to 20 items (the 20 most recent readings)
 foodB_deque = deque(maxlen=20)
-
+#define a list to place temps initializing with 0
+temp = ['0']
 
 # define a callback function to be called when a message is received
 def smoker_callback(ch, method, properties, body):
     """ Define behavior on getting a message about the smoker temperature."""
-    if {body.decode(1)} == 0:
-        pass
-    else:
-        # decode the binary message body adding the temp to the deque
-        smoker_deque.append({body.decode(1)})
-        # print the deque items
-        list(smoker_deque)
-    #check to see that deque has 5 items
-    if smoker_deque.maxlen == 5:
+    #seperate the temp from the dat/time by using split
+    message = body.decode().split(",")
+    #assign the temp to a variable making it a float
+    temp[0] = round(float(message[-1]),2)
+    # add the temp to the deque
+    smoker_deque.append(temp[0])
+    #check to see that the deque has 5 items before analyzing
+    if len(smoker_deque) == 5:
         # read rightmost item in deque and subtract from leftmost item in deque
-        #assign difference to a variable
-        Smktempcheck = smoker_deque[-1]-smoker_deque[0]
+        #assign difference to a variable as a float rounded to 2
+        Smktempcheck = round(float(smoker_deque[-1]-smoker_deque[0]),2)
+        #if the temp has changed by 15 degress then an alert is sent
         if Smktempcheck < -15:
             print("smoker alert!")
         else:
-            print("Temp change in last 2.5 minutes is:"), Smktempcheck
+            print("Temp change in last 2.5 minutes is:", Smktempcheck)
     else:
         pass
     # acknowledge the message was received and processed 
@@ -152,9 +153,9 @@ def main(hn: str, queue1: str, queue2: str, queue3: str):
     finally:
         print("\nClosing connection. Goodbye.\n")
         # delete the queues when complete so messages are cleared
-        channel.queue_delete(queue1)
-        channel.queue_delete(queue2)
-        channel.queue_delete(queue3)
+        #channel.queue_delete(queue1)
+        #channel.queue_delete(queue2)
+        #channel.queue_delete(queue3)
         connection.close()
 
 # Standard Python idiom to indicate main program entry point
