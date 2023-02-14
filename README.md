@@ -1,4 +1,4 @@
-# streaming-05-smart-smoker
+# streaming-05-06 smart-smoker
 Design and Implement a producer for the Smart Smoker App
 
 # Name: DeeDee Walker
