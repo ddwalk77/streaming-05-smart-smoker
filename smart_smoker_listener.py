@@ -58,9 +58,11 @@ def smoker_callback(ch, method, properties, body):
         #if the temp has changed by 15 degress then an alert is sent
         if Smktempcheck < -15:
             print("smoker alert!")
+        #Show work in progress, letting the user know the changes
         else:
             print("Temp change in last 2.5 minutes is:", Smktempcheck)
     else:
+        #if the deque has less than 5 items it skips
         pass
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
