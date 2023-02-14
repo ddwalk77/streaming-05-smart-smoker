@@ -85,8 +85,8 @@ def foodA_callback(ch, method, properties, body):
         # read rightmost item in deque and subtract from leftmost item in deque
         #assign difference to a variable as a float rounded to 2
         foodatempcheck = round(float(foodA_deque[-1]-foodA_deque[0]),2)
-        #if the temp has changed by 15 degress then an alert is sent
-        if foodatempcheck < -1:
+        #if the temp has changed less than 1 degree then an alert is sent
+        if foodatempcheck < 1:
             print("food stall on food A!")
         #Show work in progress, letting the user know the changes
         else:
@@ -113,8 +113,8 @@ def foodB_callback(ch, method, properties, body):
         # read rightmost item in deque and subtract from leftmost item in deque
         #assign difference to a variable as a float rounded to 2
         foodbtempcheck = round(float(foodB_deque[-1]-foodB_deque[0]),2)
-        #if the temp has changed by 15 degress then an alert is sent
-        if foodbtempcheck < -1:
+        #if the temp has changed less than 1 degree then an alert is sent
+        if foodbtempcheck < 1:
             print("food stall on food B!")
         #Show work in progress, letting the user know the changes
         else:
