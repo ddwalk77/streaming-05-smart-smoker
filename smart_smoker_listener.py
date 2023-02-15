@@ -59,13 +59,14 @@ def smoker_callback(ch, method, properties, body):
         Smktempcheck = round(float(smoker_deque[-1]-smoker_deque[0]),2)
         #if the temp has changed by 15 degress then an alert is sent
         if Smktempcheck < -15:
+            print("Current smoker temp is:", smokertemp[0],";", "Smoker temp change in last 2.5 minutes is:", Smktempcheck)
             print("smoker alert!")
         #Show work in progress, letting the user know the changes
         else:
-            print("Smoker temp change in last 2.5 minutes is:", Smktempcheck)
+            print("Current smoker temp is:", smokertemp[0],";", "Smoker temp change in last 2.5 minutes is:", Smktempcheck)
     else:
         #if the deque has less than 5 items it skips
-        pass
+        print("Current smoker temp is:", smokertemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -87,13 +88,14 @@ def foodA_callback(ch, method, properties, body):
         foodatempcheck = round(float(foodA_deque[-1]-foodA_deque[0]),2)
         #if the temp has changed less than 1 degree then an alert is sent
         if foodatempcheck < 1:
+            print("Current Food A temp is:", foodatemp[0],";", "Food A temp change in last 10 minutes is:", foodatempcheck)
             print("food stall on food A!")
         #Show work in progress, letting the user know the changes
         else:
-            print("Food A temp change in last minute is:", foodatempcheck)
+            print("Current Food A temp is:", foodatemp[0],";","Food A temp change in last 10 minutes is:", foodatempcheck)
     else:
         #if the deque has less than 20 items it skips
-        pass
+        print("Current Food A temp is:", foodatemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
@@ -115,13 +117,14 @@ def foodB_callback(ch, method, properties, body):
         foodbtempcheck = round(float(foodB_deque[-1]-foodB_deque[0]),2)
         #if the temp has changed less than 1 degree then an alert is sent
         if foodbtempcheck < 1:
+            print("Current Food B temp is:", foodbtemp[0],";", "Food B temp change in last 10 minutes is:", foodbtempcheck)
             print("food stall on food B!")
         #Show work in progress, letting the user know the changes
         else:
-            print("Food B temp change in last minute is:", foodbtempcheck)
+            print("Current Food B temp is:", foodbtemp[0],";","Food B temp change in last 10 minutes is:", foodbtempcheck)
     else:
         #if the deque has less than 20 items it skips
-        pass
+        print("Current Food B temp is:", foodbtemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
     ch.basic_ack(delivery_tag=method.delivery_tag)
