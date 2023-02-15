@@ -2,7 +2,7 @@
 Design and Implement a producer for the Smart Smoker App
 
 # Name: DeeDee Walker
-# Date: 2/7/23
+# Date: 2/7/23 - 2/15/23
 
 ### Using a Barbeque Smoker
 When running a barbeque smoker, we monitor the temperatures of the smoker and the food to ensure everything turns out tasty. Over long cooks, the following events can happen:
