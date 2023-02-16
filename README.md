@@ -1,5 +1,5 @@
 # streaming-05-06 smart-smoker
-Design and Implement a producer for the Smart Smoker App
+Design and Implement a producer for the Smart Smoker App. Add a consumer for the Smart Smoker App.
 
 # Name: DeeDee Walker
 # Date: 2/7/23 - 2/15/23
