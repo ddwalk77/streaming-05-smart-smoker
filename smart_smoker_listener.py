@@ -1,6 +1,7 @@
 """
     This program listens for work messages contiously.
-    The smart_smoker_emitter.py must run to send the messages
+
+    !!!!!The smart_smoker_emitter.py must run to start sending the messages first!!!!!
 
     Name: DeeDee Walker
     Date: 2/12/23
@@ -9,12 +10,8 @@
     The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
     Any food temperature changes less than 1 degree F in 10 minutes (food stall!)
 
-    Create three consumer processes, each one monitoring one of the temperature streams. 
+    Three consumer processes, each one monitoring one of the temperature streams. 
     Perform calculations to determine if a significant event has occurred.
-
-    Optional: Alert Notifications
-    Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
-    You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
 
     Time Windows:
     Smoker time window is 2.5 minutes
@@ -24,10 +21,10 @@
     At one reading every 1/2 minute, the smoker deque max length is 5 (2.5 min * 1 reading/0.5 min)
     At one reading every 1/2 minute, the food deque max length is 20 (10 min * 1 reading/0.5 min) 
 
-    Three listeneing queues: 01-smoker, 02-food-A, 02-food-B
-    Three listening callback functions
+    Three listening queues: 01-smoker, 02-food-A, 02-food-B
+    Three listening callback functions: smoker_callback, fooda_callback, foodb_callback
 
-    Start the emitter first or it closes out the listener since the queue delete is part of the script
+    !!!!!Start the emitter first or it closes out the listener since the queue delete is part of the script!!!!!
 """
 import pika
 import sys
@@ -65,7 +62,7 @@ def smoker_callback(ch, method, properties, body):
         else:
             print("Current smoker temp is:", smokertemp[0],";", "Smoker temp change in last 2.5 minutes is:", Smktempcheck)
     else:
-        #if the deque has less than 5 items it skips
+        #if the deque has less than 5 items the current temp is printed
         print("Current smoker temp is:", smokertemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
@@ -94,7 +91,7 @@ def foodA_callback(ch, method, properties, body):
         else:
             print("Current Food A temp is:", foodatemp[0],";","Food A temp change in last 10 minutes is:", foodatempcheck)
     else:
-        #if the deque has less than 20 items it skips
+        #if the deque has less than 20 items the current temp is printed
         print("Current Food A temp is:", foodatemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
@@ -102,7 +99,7 @@ def foodA_callback(ch, method, properties, body):
 
 def foodB_callback(ch, method, properties, body):
     """ Define behavior on getting a message about FoodB temperature."""
-    #define a list to place food A temps initializing with 0
+    #define a list to place food B temps initializing with 0
     foodbtemp = ['0']
     #seperate the temp from the dat/time by using split
     message = body.decode().split(",")    
@@ -123,7 +120,7 @@ def foodB_callback(ch, method, properties, body):
         else:
             print("Current Food B temp is:", foodbtemp[0],";","Food B temp change in last 10 minutes is:", foodbtempcheck)
     else:
-        #if the deque has less than 20 items it skips
+        #if the deque has less than 20 items the current temp is printed
         print("Current Food B temp is:", foodbtemp[0])
     # acknowledge the message was received and processed 
     # (now it can be deleted from the queue)
@@ -195,7 +192,7 @@ def main(hn: str, queue1: str, queue2: str, queue3: str):
         sys.exit(0)
     finally:
         print("\nClosing connection. Goodbye.\n")
-        # delete the queues when complete so messages are cleared
+        # delete the queues when complete so unprocessed messages are cleared
         channel.queue_delete(queue1)
         channel.queue_delete(queue2)
         channel.queue_delete(queue3)
