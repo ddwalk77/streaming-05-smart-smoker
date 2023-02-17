@@ -5,23 +5,23 @@
 
  Welcome! 
 
- It's 2023-02-08 at 06:03 AM
+ It's 2023-02-17 at 06:14 AM
 
  This file is running on:    nt Windows 10
  
- The Python version is:      3.10.9
+ The Python version is:      3.11.0
  
  The Python interpreter is at: 
- C:\Users\ddwal\anaconda3\envs\firstvrtenv\python.exe
+ C:\Users\ddwal\anaconda3\envs\py311\python.exe
 
  The active environment should be either conda OR pip (one should be None):
 
-     Active conda env is: firstvrtenv
+     Active conda env is: py311
      Active pip env is:   None
  
  The path to the active virtual environment is:
 
- C:\Users\ddwal\anaconda3\envs\firstvrtenv
+ C:\Users\ddwal\anaconda3\envs\py311
  
  The Current Working Directory (CWD) where this command was launched is:
 
