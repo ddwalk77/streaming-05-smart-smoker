@@ -127,3 +127,6 @@ dmypy.json
 
 # Pyre type checker
 .pyre/
+
+# Files with secrets (e.g. our email and password)
+.env.toml
