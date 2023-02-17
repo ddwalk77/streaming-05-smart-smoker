@@ -28,7 +28,6 @@
 """
 import pika
 import sys
-import time
 from collections import deque
 
 # limited to 5 items (the 5 most recent readings)
