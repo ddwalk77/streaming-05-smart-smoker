@@ -57,12 +57,6 @@ That is:
 - evaluate the deque of readings (either 5 or 20) as though the real timestamps were not so terrible.
 It's more complex if we try to use real timestamps. Adjusting for the non-regular timestamps is an interesting problem, but not the point. Know that you will likely have to address issues like that in the "real world". 
 
-Project for later is to process the timestamp
-
-### Optional: Alert Notifications
-- Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
-- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
-
 ### Producer (smart_smoker_emitter.py)
 The producer, smart_smoker_emitter.py, opens the csv file, smoker-temps.csv, and reads each row. For each row, a connection is made to Rabbit MQ, queues are declared, each columns is read and submitted to its respective queue. For each column, the time is captured, then the temp, sending both to the queue as a row. If there is no temp then no message is sent to that queue.
 
@@ -93,3 +87,10 @@ Alerts with messages:
 End of script and idle queues:
 End of run:
 ![finishing](https://github.com/ddwalk77/streaming-05-smart-smoker/blob/main/finished.png "finishing")
+
+### Optional: Alert Notifications
+- Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
+- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
+
+### Project for later:
+- Process the timestamp
