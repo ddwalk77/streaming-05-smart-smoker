@@ -90,7 +90,9 @@ End of run:
 
 ### Optional: Alert Notifications
 - Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
-- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible. 
+- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible.
+
+- I started with updating my listener with the email alerts but it was timing out so I added the examples to run. I'm not able to run the examples either. I get a timeout error. It is never connecting to the server. I am using Outlook as my client and have the set-up as instructed. It is a gmail account. Ive tried turning off my firewall as well and it still doesn't send. I will have to revisit this optional work.
 
 ### Project for later:
 - Process the timestamp
