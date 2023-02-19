@@ -41,7 +41,7 @@ OR If You're using Two factor:
 import smtplib
 from email.message import EmailMessage
 import tomllib  # requires Python 3.11
-
+#removed pprint of the dictionary
 
 def createAndSendTextAlert(text_message: str):
 
@@ -74,7 +74,7 @@ def createAndSendTextAlert(text_message: str):
     print()
 
     # Create an instance of an email server, enable debug messages
-
+    #added port and a timeout here otherwise it was hanging up here
     server = smtplib.SMTP(host, port, timeout=120)
     server.set_debuglevel(1)
 

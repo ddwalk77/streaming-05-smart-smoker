@@ -41,6 +41,7 @@ OR If You're using Two factor:
 import smtplib
 from email.message import EmailMessage
 import tomllib  # requires Python 3.11
+#removed pprint of the dictionary
 
 # define functions here
 
