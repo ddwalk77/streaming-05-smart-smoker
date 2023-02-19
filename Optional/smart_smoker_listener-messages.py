@@ -31,7 +31,7 @@ import sys
 from collections import deque
 import smtplib
 from email.message import EmailMessage
-import tomllib
+import tomllib #requires Python 3.11
 
 # limited to 5 items (the 5 most recent readings)
 smoker_deque = deque(maxlen=5)
@@ -46,6 +46,7 @@ def smoker_callback(ch, method, properties, body):
     #declare alert messages
     subject_str = ("Smoker Alert from Smoker App")
     content_str = ("Smoker Alert!")
+    text_message = ("Smoker Alert from Smoker App! Smoker Alert!")
     #define a list to place smoker temps initializing with 0
     smokertemp = ['0']
     #seperate the temp from the dat/time by using split
@@ -63,7 +64,7 @@ def smoker_callback(ch, method, properties, body):
         if Smktempcheck < -15:
             print("Current smoker temp is:", smokertemp[0],";", "Smoker temp change in last 2.5 minutes is:", Smktempcheck)
             print("Smoker Alert!")
-            createAndSendEmailAlert(subject_str,content_str)
+            createAndSendEmailTextAlert(subject_str,content_str, text_message)
         #Show work in progress, letting the user know the changes
         else:
             print("Current smoker temp is:", smokertemp[0],";", "Smoker temp change in last 2.5 minutes is:", Smktempcheck)
@@ -79,6 +80,7 @@ def foodA_callback(ch, method, properties, body):
     #declare alert messages
     subject_str = ("Food A Alert from Smoker App")
     content_str = ("Food Stall on Food A!")
+    text_message = ("Food A alert from Smoker App! Food Stall on Food A!")
     #define a list to place food A temps initializing with 0
     foodatemp = ['0']
     #seperate the temp from the dat/time by using split
@@ -96,7 +98,7 @@ def foodA_callback(ch, method, properties, body):
         if foodatempcheck < 1:
             print("Current Food A temp is:", foodatemp[0],";", "Food A temp change in last 10 minutes is:", foodatempcheck)
             print("food stall on food A!")
-            createAndSendEmailAlert(subject_str,content_str)
+            createAndSendEmailTextAlert(subject_str,content_str,text_message)
         #Show work in progress, letting the user know the changes
         else:
             print("Current Food A temp is:", foodatemp[0],";","Food A temp change in last 10 minutes is:", foodatempcheck)
@@ -112,6 +114,7 @@ def foodB_callback(ch, method, properties, body):
     #declare alert messages
     subject_str = ("Food B Alert from Smoker App")
     content_str = ("Food Stall on Food B!")
+    text_message = ("Food B alert from Smoker App! Food Stall on Food B!")
     #define a list to place food B temps initializing with 0
     foodbtemp = ['0']
     #seperate the temp from the dat/time by using split
@@ -129,7 +132,7 @@ def foodB_callback(ch, method, properties, body):
         if foodbtempcheck < 1:
             print("Current Food B temp is:", foodbtemp[0],";", "Food B temp change in last 10 minutes is:", foodbtempcheck)
             print("food stall on food B!")
-            createAndSendEmailAlert(subject_str,content_str)
+            createAndSendEmailTextAlert(subject_str,content_str,text_message)
         #Show work in progress, letting the user know the changes
         else:
             print("Current Food B temp is:", foodbtemp[0],";","Food B temp change in last 10 minutes is:", foodbtempcheck)
@@ -142,7 +145,7 @@ def foodB_callback(ch, method, properties, body):
     
 #Send an email with Python.email for alerts
 
-def createAndSendEmailAlert(email_subject: str, email_body: str):
+def createAndSendEmailTextAlert(email_subject: str, email_body: str, text_message: str):
 
     """Read outgoing email info from a TOML config file"""
 
@@ -159,17 +162,21 @@ def createAndSendEmailAlert(email_subject: str, email_body: str):
     # Create an instance of an EmailMessage
 
     msg = EmailMessage()
+    tmsg = EmailMessage()
     msg["From"] = secret_dict["outgoing_email_address"]
     msg["To"] = secret_dict["outgoing_email_address"]
+    tmsg["To"] = secret_dict["sms_address_for_texts"]
     msg["Reply-to"] = secret_dict["outgoing_email_address"]
     msg["Subject"] = email_subject
     msg.set_content(email_body)
-
+    tmsg.set_content(text_message)
+    
     print("========================================")
     print(f"Prepared Email Message: ")
     print("========================================")
     print()
     print(f"{str(msg)}")
+    print(f"{str(tmsg)}")
     print("========================================")
     print()
 
@@ -182,6 +189,7 @@ def createAndSendEmailAlert(email_subject: str, email_body: str):
     # Create an instance of an email server, enable debug messages
 
     server = smtplib.SMTP(host, port, timeout=120)
+    #debug level 2 results in a timestamp
     server.set_debuglevel(2)
 
     print("========================================")
@@ -229,6 +237,7 @@ def createAndSendEmailAlert(email_subject: str, email_body: str):
 
         try:
             server.send_message(msg)
+            server.send_message(tmsg)
             print("========================================")
             print(f"Message sent.")
             print("========================================")
