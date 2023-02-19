@@ -96,7 +96,13 @@ End of run:
 
 TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
 
--Update to TimeoutError: I added the port and a timeout to 'server = smtplib.SMTP(host, port, timeout=120)' and this resolved the issue.
+-Update to TimeoutError: I added the port and a timeout to 'server = smtplib.SMTP(host, port, timeout=120)' and this resolved the issue on both email and text.
+
+- Running 'smart_smoker_listener-messages.py' in just one terminal screen since I have one consumer with all queueus. I ran for email and text alerts.
+Screenshots showing food stalls and smoker alerts on email & texts:
+Alert Messages:
+![emails](https://github.com/ddwalk77/streaming-05-smart-smoker/blob/main/emailalerts.png "Email alerts")
+![texts](https://github.com/ddwalk77/streaming-05-smart-smoker/blob/main/textsalerts.png "Texts alerts")
 
 ### Project for later:
 - Process the timestamp
