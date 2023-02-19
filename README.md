@@ -90,7 +90,6 @@ End of run:
 
 ### Optional: Alert Notifications
 - Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
-- This is set-up through gmail.
 
 - Running 'smart_smoker_listener-messages.py' in just one terminal screen since I have one consumer with all queueus. I ran for email and text alerts.
 
