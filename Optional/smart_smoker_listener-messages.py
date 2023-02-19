@@ -4,7 +4,7 @@
     !!!!!The smart_smoker_emitter.py must run to start sending the messages first!!!!!
 
     Name: DeeDee Walker
-    Date: 2/12/23
+    Date: 2/19/23
 
     We want know if (Condition To monitor):
     The smoker temperature decreases by more than 15 degrees F in 2.5 minutes (smoker alert!)
@@ -181,7 +181,7 @@ def createAndSendEmailAlert(email_subject: str, email_body: str):
 
     # Create an instance of an email server, enable debug messages
 
-    server = smtplib.SMTP(host)
+    server = smtplib.SMTP(host, port, timeout=120)
     server.set_debuglevel(2)
 
     print("========================================")
@@ -191,7 +191,7 @@ def createAndSendEmailAlert(email_subject: str, email_body: str):
 
     try:
         print()
-        server.connect(host, port)  # 465
+        server.connect(host, port)
         print("========================================")
         print(f"Connected: {host, port}")
         print("So far so good - will attempt to start TLS")
