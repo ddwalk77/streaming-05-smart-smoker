@@ -90,11 +90,13 @@ End of run:
 
 ### Optional: Alert Notifications
 - Optionally, we can have our consumers send us an email or a text when a significant event occurs. 
-- You'll need some way to send outgoing emails. I use my main Gmail account - other options are possible.
+- This is set-up through gmail.
 
 - I started with updating my listener with the email alerts but it was timing out so I added the examples to run. I'm not able to run the examples either. I get a timeout error. It is never connecting to the server. I am using Outlook as my client and have the set-up as instructed. It is a gmail account. Ive tried turning off my firewall as well and it still doesn't send. I will have to revisit this optional work.
 
 TimeoutError: [WinError 10060] A connection attempt failed because the connected party did not properly respond after a period of time, or established connection failed because connected host has failed to respond
+
+-Update to TimeoutError: I added the port and a timeout to 'server = smtplib.SMTP(host, port, timeout=120)' and this resolved the issue.
 
 ### Project for later:
 - Process the timestamp
